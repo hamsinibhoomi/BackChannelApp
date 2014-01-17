@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Backchannel Application</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <div id="main">
+    <div class="left">
+      <div class="main_content">
+
+        <h2> <i> Post </i></h2>
+
+        <%= form_for(@post) do |f| %>
+            <% if @post.errors.any? %>
+                <div id="error_explanation">
+                  <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+                  <ul>
+                    <% @post.errors.full_messages.each do |msg| %>
+                        <li><%= msg %></li>
+                    <% end %>
+                  </ul>
+                </div>
+            <% end %>
+
+            <div class="field">
+              <%= f.label :title %><br />
+              <%= f.text_field :title %>
+
+            </div>
+            <div class="field">
+              <%= f.label :description %><br />
+              <%= f.text_area :description %>
+
+            </div>
+
+            <div class="field">
+              <%= f.label :categories %>
+              <%= select("post","category_id",Category.find(:all).collect{|c|[c.name,c.id]}) %>
+            </div>
+
+            <div class="field">
+
+              <%= f.label :tag %><br />
+              <%= f.text_field :tag %>
+              <h4> (Separate tags by # e.g., abc#def#xyz) </h4>
+            </div>
+
+            <div class="actions">
+              <%= f.submit %>
+
+            </div>
+        <% end %>
+        <h3><%= link_to 'Back', posts_path %></h3>
+
+         </div>
+      </div>
+    <div class="right">
+      <h2>Search</h2>
+      <%= form_tag :controller => 'posts', :action => 'show_search' do%>
+
+          <%= text_field_tag :search, params[:search] %>  <br/> <br/>
+          <label> Search by :</label>      <br/>
+          <%= radio_button_tag 'search_by', 'unityid' %> <label>unityid</label>
+          <%= radio_button_tag 'search_by', 'category' %> <label>category</label>
+          <%= radio_button_tag 'search_by', 'tag' %>   <label>tag</label>
+          <%= radio_button_tag 'search_by', 'content' %>  <label>content</label>  <br/> <br/>
+          <%= submit_tag "Search" %>
+      <% end %>
+      <%= yield %>
+    </div>
+    </div>
+</body>
+</html>
+

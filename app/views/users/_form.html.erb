@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Backchannel Application</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <div id="main">
+    <div class="left">
+      <div class="main_content">
+
+
+        <%= form_for(@user) do |f| %>
+            <% if @user.errors.any? %>
+                <div id="error_explanation">
+                  <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+                  <ul>
+                    <% @user.errors.full_messages.each do |msg| %>
+                        <li><%= msg %></li>
+                    <% end %>
+                  </ul>
+                </div>
+            <% end %>
+            <div class="field">
+              <%= f.label :unityid %><br />
+              <%= f.text_field :unityid %>
+            </div>
+            <div class="field">
+              <%= f.label :password %><br />
+              <%= f.password_field :password %>
+            </div>
+            <div class="field">
+              <%= f.label :name %><br />
+              <%= f.text_field :name %>
+            </div>
+            <div class="actions">
+              <%= f.submit %>
+            </div>
+        <% end %>
+        <h3><%= link_to 'Back', :controller => 'login', :action => 'index' %></h3>
+      </div>
+    </div>
+    <div class="right">
+
+
+      <h2>Search</h2>
+      <%= form_tag :controller => 'posts', :action => 'show_search' do%>
+
+          <%= text_field_tag :search, params[:search] %>  <br/> <br/>
+          <label> Search by :</label>
+          <%= radio_button_tag 'search_by', 'unityid' %> <label>unityid</label>
+          <%= radio_button_tag 'search_by', 'category' %> <label>category</label>
+          <%= radio_button_tag 'search_by', 'tag' %>   <label>tag</label>
+          <%= radio_button_tag 'search_by', 'content' %>  <label>content</label>  <br/> <br/>
+          <%= submit_tag "Search" %>
+      <% end %>
+      <%= yield %>
+
+    </div>
+  </div>
+<div id="ffscrollbarfix"></div>
+</body>
+</html>

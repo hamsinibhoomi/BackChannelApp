@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html" xml:lang="en" lang="en">
+<head>
+  <title>Backchannel Application</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div id="header">
+  <div class="title">
+    <div class = "left">
+      <h1>B<dfn>ackchannel</dfn> A<dfn>pplication</dfn></h1>
+    </div>
+    <div class="right">
+      <% if session[:username] %>
+          <h2><b><dfn>Logged in as <%= session[:username] %>  &emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&ensp;
+            <%= link_to 'Logout', :controller=>'login', :action=>'logout' %>
+          </dfn></b></h2>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+  <div id="main">
+    <div class="left">
+      <div class="main_content">
+
+        <p id="notice"><%= notice %></p>
+
+        <p>
+          <h3><b>Description:</b></h3><br/>
+          <%= @post.description %>
+
+        </p>
+
+        <h3><b>Comments:</b></h3>
+        <table border="1px" cellspacing="0px" cellpadding="10px">
+          <th align="center">COMMENT</th>
+          <th align="center">VOTE</th>
+          <th align="center">TOTAL VOTES</th>
+          <% @post.comms.each do |comment| %>
+              <p>
+
+
+                <tr>
+                  <td align="center"> <%= comment.content %>    </td>
+
+
+                  <%comm_vote = CommVote.find(:all, :conditions=>{:comm_id=>comment.id,:user_id=> session[:id1]})%>
+                  <% if comment.user_id != session[:id1] %>
+                      <%if !comm_vote.empty? %>
+                          <td align="center"><%=button_to 'DownVote',:action => 'subtract_comment_vote', :id3 => comment.id, :id5 => @post.id  %></td>
+                      <% else %>
+                          <td align="center"><%=button_to 'UpVote',:action => 'add_comment_vote', :id3 => comment.id, :id4 => @post.id  %></td>
+                      <% end %>
+                  <% end %>
+                  <td align="center"><%=comment.votes%></td>
+                  <% if comment.user_id == session[:id1] %>
+                      <td><%= link_to 'Delete',:controller =>'comms', :action => 'comm_delete', :id8 => @post.id, :id9 => comment.id %></td>
+                  <% end %>
+          <% end %>
+
+
+          <tr>
+
+          </p>
+        </table>    <br/>
+        <h3><b>Add a Comment:</b></h3>
+        <%= form_for([@post, @post.comms.build]) do |f| %>
+            <p>
+              <%= f.text_area :content %>
+            </p>
+            <p>
+              <%= f.submit %>
+            </p>
+        <% end %>
+        <h4><%= link_to 'Edit', edit_post_path(@post) %> |
+        <%= link_to 'Back', posts_path %>  </h4>
+
+
+      </div>
+    </div>
+    <div class="right">
+
+
+      <h2>Search</h2>
+      <%= form_tag :controller => 'posts', :action => 'show_search' do%>
+
+          <%= text_field_tag :search, params[:search] %>  <br/> <br/>
+          <label> Search by :</label>
+          <%= radio_button_tag 'search_by', 'unityid' %> <label>Unity ID</label>
+          <%= radio_button_tag 'search_by', 'category' %> <label>Category</label>
+          <%= radio_button_tag 'search_by', 'tag' %>   <label>Tag</label>
+          <%= radio_button_tag 'search_by', 'content' %>  <label>Content</label>  <br/> <br/>
+          <%= submit_tag "Search" %>
+      <% end %>
+      <%= yield %>
+
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="bottom"> 2008 &copy; Hamsini, Amoolya, Anish | Valid <a target="_blank"
+                                                                        href="http://validator.w3.org/check?
+uri=referer" class="discrete">XHTML</a> and <a target="_blank"
+
+                                               href="http://jigsaw.w3.org/css-validator/check/referer"
+                                               class="discrete">CSS</a> | Design by <a
+    href="http://eatlon.com" class="discrete">Eatlon.com</a> </div>
+  </div>
+</div>
+<div id="ffscrollbarfix"></div>
+</body>
+</html>
+

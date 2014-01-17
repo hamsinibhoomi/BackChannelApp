@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Backchannel Application</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div id="header">
+  <div class="title">
+    <div class = "left">
+      <h1>B<dfn>ackchannel</dfn> A<dfn>pplication</dfn></h1>
+    </div>
+    <div class="right">
+      <% if session[:username] %>
+          <h2><b><dfn>Logged in as <%= session[:username] %>  &emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&ensp;&emsp;
+            <%= link_to 'Logout', :controller=>'login', :action=>'logout' %>
+          </dfn></b></h2>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div id="content">
+  <div id="menu">
+    <h2>Navigate</h2>
+    <ul>
+      <li><%= link_to 'Home', :controller => 'categories', :action => 'index' %></li>
+      <li><%= link_to 'New Category', new_category_path %>   </li>
+      <li><%= link_to 'View users', :controller => 'users', :action => 'index' %></li>
+      <li><%= link_to 'Create New Admin', :controller => 'users', :action =>'new' %>  </li>
+      <li><%= link_to 'Report', :controller => 'posts', :action => 'report' %> </li>
+    </ul>
+
+  </div>
+  <div id="main">
+    <div class="left">
+      <div class="main_content">
+
+<h2><i>Listing categories</i></h2>
+
+<table border="1px" cellpadding="10px" cellspacing="0px">
+  <tr>
+    <th align="center">Name</th>
+    <th align="center">Options</th>
+
+  </tr>
+
+<% @categories.each do |category| %>
+  <tr>
+    <td><%= category.name %></td>
+    <td><%= link_to 'Show', posts_path(:cat_id => category.id)%> |
+    <%= link_to 'Edit', edit_category_path(category) %>  |
+    <%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+      </div>
+    </div>
+    <div class="right">
+
+
+      <h2>Search</h2>
+      <%= form_tag :controller => 'posts', :action => 'show_search' do%>
+
+          <%= text_field_tag :search, params[:search] %>  <br/> <br/>
+          <label> Search by :</label>      <br/>
+          <%= radio_button_tag 'search_by', 'unityid' %> <label>Unity ID</label>
+          <%= radio_button_tag 'search_by', 'category' %> <label>Category</label>
+          <%= radio_button_tag 'search_by', 'tag' %>   <label>Tag</label>
+          <%= radio_button_tag 'search_by', 'content' %>  <label>Content</label>  <br/> <br/>
+          <%= submit_tag "Search" %>
+      <% end %>
+      <%= yield %>
+
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="bottom"> 2008 &copy; Hamsini, Amoolya, Anish | Valid <a target="_blank"
+                                                                        href="http://validator.w3.org/check?
+uri=referer" class="discrete">XHTML</a> and <a target="_blank"
+
+                                               href="http://jigsaw.w3.org/css-validator/check/referer"
+                                               class="discrete">CSS</a> | Design by <a
+    href="http://eatlon.com" class="discrete">Eatlon.com</a> </div>
+  </div>
+</div>
+<div id="ffscrollbarfix"></div>
+</body>
+</html>

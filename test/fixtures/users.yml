@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  unityid: MyString
+  passwrod: MyString
+  name: MyString
+
+two:
+  unityid: MyString
+  passwrod: MyString
+  name: MyString
